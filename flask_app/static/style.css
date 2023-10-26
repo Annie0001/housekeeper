@@ -1,0 +1,12 @@
+.show_tree{
+    padding:20px;
+    margin-left: 50px;
+}
+.show_tree_padding_20{
+    padding:20px;
+}
+.logout_button{
+    margin-top: 10px; 
+    background-color: rgb(20,162,184); 
+    color: white;
+}
