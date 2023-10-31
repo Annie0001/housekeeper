@@ -7,7 +7,7 @@ from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt(app)
 
 
-@app.route('/')
+@app.route('/create')
 def show_registeration_and_login():
 
     return render_template('create.html')
@@ -107,6 +107,98 @@ def update_user(id):
     User.update_user(data)
     return redirect('/user/account')
 
+@app.route('/')
+def index():
 
+    return render_template('main.html')
 
+@app.route('/cleaning_services')
+def show_cleaning_services():
+    return render_template('search_cleaning_services.html')
 
+@app.route('/cleaning_services_search_results', methods=['POST'])
+def search_cleaning_services_results():
+
+    home_value_check = 0
+    if "home" in request.form and request.form["home"] == "home_is_selected":
+        home_value_check = 1
+    
+    office_value_check = 0
+    if "office" in request.form and request.form["office"] == "office_is_selected":
+        office_value_check = 1
+    
+    deep_cleaning_value_check = 0
+    if "deep_cleaning" in request.form and request.form["deep_cleaning"] == "deep_cleaning_is_selected":
+        deep_cleaning_value_check = 1
+
+    same_day_cleaning_value_check = 0
+    if "same_day_cleaning" in request.form and request.form["same_day_cleaning"] == "same_day_cleaning_is_selected":
+        same_day_cleaning_value_check = 1
+
+    data = {
+        "id" : id,
+        "home":home_value_check,
+        "office":office_value_check,
+        "deep_cleaning":deep_cleaning_value_check,
+        "same_day_cleaning": same_day_cleaning_value_check,
+        "rate":request.form["rate"],
+        "zip_code":request.form["zip_code"]
+    }
+    
+    housekeepers_search_result = User.housekeeper_search_results(data)
+    return render_template('search_cleaning_services.html', housekeepers =housekeepers_search_result)
+
+@app.route('/housekeeper_profile/<int:id>')
+def housekeeper_profile(id):
+    data = {
+        "user_id" : id
+    }
+    housekeeper_from_db = User.get_user_by_id(data)
+    return render_template('housekeeper_profile.html', housekeeper = housekeeper_from_db)
+
+@app.route('/housekeeper_profile/<int:id>/profile/show_edit')
+def show_edit_housekeeper_profile(id):
+
+    data = {
+        "user_id" : id
+    }
+    housekeeper_from_db = User.get_user_by_id(data)
+    return render_template('edit_profile.html', housekeeper = housekeeper_from_db)
+
+@app.route('/housekeeper_profile/<int:id>/profile/edit', methods=['POST'])
+def edit_housekeeper_profile(id):
+
+    home_value_check = 0
+    if "homeCleaning" in request.form and request.form["homeCleaning"] == "home":
+        home_value_check = 1
+    
+    office_value_check = 0
+    if "officeCleaning" in request.form and request.form["officeCleaning"] == "office":
+        office_value_check = 1
+    
+    deep_cleaning_value_check = 0
+    if "deepCleaning" in request.form and request.form["deepCleaning"] == "deep_cleaning":
+        deep_cleaning_value_check = 1
+
+    same_day_cleaning_value_check = 0
+    if "sameDayCleaning" in request.form and request.form["sameDayCleaning"] == "same_day_cleaning":
+        same_day_cleaning_value_check = 1
+
+    data = {
+        "id" : id,
+        "first_name":request.form["firstName"],
+        "last_name":request.form["lastName"],
+        "email":request.form["email"],
+        "phone_number":request.form["phone_number"],
+        "zip_code":request.form["zip_code"],
+        "rate":request.form["rate"],
+        "description":request.form["description"],
+        "home_cleaning":home_value_check ,
+        "office_cleaning":office_value_check,
+        "deep_cleaning_services":deep_cleaning_value_check,
+        "same_day_cleaning_services":same_day_cleaning_value_check,
+        "gender":request.form["genderOptions"]
+    }
+
+    User.edit_housekeeper_profile(data)
+    return redirect('/housekeeper_profile/' + str(id))

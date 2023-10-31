@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Edit Profile</title>
+</head>
+<body>
+    <h1> Update Your Profile</h1>
+    <img src="photo.jpg" alt="" width="100" height="100">
+    <a href="">Upload a photo</a>
+    <form action="/housekeeper_profile/{{housekeeper.id}}/profile/edit" method="post">
+        <div class="form-row" >
+            <div class="form-group col-md-3">
+                <label for="inputFirstName">First Name:</label>
+                <input type="text" class="form-control" id="inputFirstName" name="firstName" value="{{housekeeper.first_name}}">
+                <label for="inputLastName">Last Name:</label>
+                <input type="text" class="form-control" id="inputLastName" name="lastName" value="{{housekeeper.last_name}}">
+                <label for="inputEmail">Email:</label>
+                <input type="email" class="form-control" id="inputEmail" name="email" value="{{housekeeper.email}}">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="inputPhoneNumber">Phone Number:</label>
+                <input type="text" class="form-control" id="inputPhoneNumber" name="phone_number" value="{{housekeeper.phone_number}}">
+                <label for="inputZipCode">Service Zip Code:</label>
+                <input type="text" class="form-control" id="inputZipCode" name="zip_code" value="{{housekeeper.zip_code}}">
+                <label for="inputRate">Rate:</label>
+                <input type="text" class="form-control" id="inputRate" name="rate" value="{{housekeeper.rate}}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control col-md-4" id="description" rows="3" cols="3" name="description">{{housekeeper.description}}</textarea>
+        </div>
+
+        <h4>Add what services you provide: </h4>
+        <div class="form-check form-check-inline">
+            {%if housekeeper.home == 1%}
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="homeCleaning" value="home" checked>
+            {%else%}
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="homeCleaning" value="home">
+            {%endif%}
+            <label class="form-check-label" for="inlineCheckbox1">Home</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            {%if housekeeper.office == 1%}
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="officeCleaning" value="office" checked>
+            {%else%}
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="officeCleaning" value="office">
+            {%endif%}
+            <label class="form-check-label" for="inlineCheckbox2">Office</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            {%if housekeeper.deep_cleaning == 1%}
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="deepCleaning" value="deep_cleaning" checked>
+            {%else%}
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" name="deepCleaning" value="deep_cleaning">
+            {%endif%}
+            <label class="form-check-label" for="inlineCheckbox3">Deep Cleaning</label>
+        </div>
+
+        <div class="form-check form-check-inline">
+            {%if housekeeper.same_day_cleaning == 1%}
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox4" name="sameDayCleaning" value="same_day_cleaning" checked>
+            {%else%}
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox4" name="sameDayCleaning" value="same_day_cleaning">
+            {%endif%}
+            <label class="form-check-label" for="inlineCheckbox4">Same Day Cleaning</label>
+        </div>
+        
+        <div>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label" for="inlineRadio1">Gender: </label>
+                {%if housekeeper.gender == male%}
+                <input class="form-check-input" type="radio" name="genderOptions" id="inlineRadio1" value="male" checked>
+                <label class="form-check-label" for="inlineRadio1">Male</label>
+                <input class="form-check-input" type="radio" name="genderOptions" id="inlineRadio2" value="female">
+                <label class="form-check-label" for="inlineRadio2">Female</label>
+                {%else%}
+                <input class="form-check-input" type="radio" name="genderOptions" id="inlineRadio1" value="male">
+                <label class="form-check-label" for="inlineRadio1">Male</label>
+                <input class="form-check-input" type="radio" name="genderOptions" id="inlineRadio2" value="female" checked>
+                <label class="form-check-label" for="inlineRadio2">Female</label>
+                {%endif%}
+            </div>
+        </div>
+        <p>Skills:<a href="/housekeeper_profile/{{housekeeper.id}}/skill/add">Add</a></p>
+        <button type="submit">Update</button>
+    </form>
+</body>
+</html>

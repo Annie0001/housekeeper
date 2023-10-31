@@ -11,9 +11,16 @@ class User:
         self.last_name = data['last_name']
         self.email = data['email']
         self.password = data['password']
+        self.rate = data ['rate']
+        self.zip_code = data ['service_zip_code']
+        self.phone_number = data ['phone_number']
+        self.description = data['description']
+        self.home = data ['home_service']
+        self.office = data ['office_service']
+        self.deep_cleaning = data ['deep_cleaning_service']
+        self.same_day_cleaning = data ['same_day_cleaning_service']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
-
     
     @classmethod
     def register(cls, data):
@@ -159,4 +166,27 @@ class User:
             is_valid = False
     
         return is_valid
+    
+    @classmethod
+    def housekeeper_search_results(cls,data):
+        # query = "SELECT * FROM users where is_housekeeper = 1"
+        query = "SELECT * FROM users where is_housekeeper = 1 and home_service=%(home)s and office_service=%(office)s and deep_cleaning_service=%(deep_cleaning)s and same_day_cleaning_service= %(same_day_cleaning)s and rate< %(rate)s and service_zip_code = %(zip_code)s"
+        results =  connectToMySQL('housekeeper_schema').query_db(query,data)
+        # if user with this email does not exist, return false
 
+        print(results)
+        housekeepers = []
+        #create class instance of user returned becasue the user exists with the given email
+        if results:
+            for row in results:
+                # convert book data from row into object
+                user = cls(row)
+                housekeepers.append(user)
+        return housekeepers
+
+
+    @classmethod
+    def edit_housekeeper_profile(cls, data):
+        query = "Update users SET first_name=%(first_name)s, last_name=%(last_name)s, email=%(email)s, phone_number=%(phone_number)s, service_zip_code=%(zip_code)s, rate=%(rate)s, description=%(description)s, home_service=%(home_cleaning)s, office_service=%(office_cleaning)s, deep_cleaning_service=%(deep_cleaning_services)s, same_day_cleaning_service=%(same_day_cleaning_services)s, gender=%(gender)s"
+
+        return connectToMySQL('housekeeper_schema').query_db(query, data)
