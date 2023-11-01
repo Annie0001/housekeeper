@@ -1,6 +1,6 @@
 from flask_app import app
 # from flask_app.controllers import dojos,ninjas
-from flask_app.controllers import users, trees
+from flask_app.controllers import users, trees , skills
 
 
 if __name__ == "__main__":

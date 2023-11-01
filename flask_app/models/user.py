@@ -24,7 +24,7 @@ class User:
     
     @classmethod
     def register(cls, data):
-        query = "INSERT INTO users (first_name, last_name, email,password) VALUES(%(fname)s, %(lname)s, %(email)s , %(password)s);"
+        query = "INSERT INTO users (first_name, last_name, email,password, is_housekeeper) VALUES(%(fname)s, %(lname)s, %(email)s , %(password)s , %(is_housekeeper)s);"
 
         return connectToMySQL('housekeeper_schema').query_db(query, data)
     
@@ -190,3 +190,4 @@ class User:
         query = "Update users SET first_name=%(first_name)s, last_name=%(last_name)s, email=%(email)s, phone_number=%(phone_number)s, service_zip_code=%(zip_code)s, rate=%(rate)s, description=%(description)s, home_service=%(home_cleaning)s, office_service=%(office_cleaning)s, deep_cleaning_service=%(deep_cleaning_services)s, same_day_cleaning_service=%(same_day_cleaning_services)s, gender=%(gender)s"
 
         return connectToMySQL('housekeeper_schema').query_db(query, data)
+    

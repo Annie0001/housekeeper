@@ -17,18 +17,30 @@ def register_user():
 
     # checking the submitted registeration form fields are valid or not 
     if not User.validate_user(request.form):
-        return redirect('/')
+        return redirect('/create')
     
     pw_hash = bcrypt.generate_password_hash(request.form['password'])
     print(pw_hash)
     
+    #     if "home" in request.form and request.form["home"] == "home_is_selected":
+
+    is_housekeeper_value_checked = 0
+    if "is_housekeeper" in request.form and request.form["is_housekeeper"] == "is_housekeeper_checked":
+        print('entred if block')
+        is_housekeeper_value_checked = 1
+
+
+    print('request.form: ', request.form)
     data={
         "fname":request.form["firstname"],
         "lname":request.form["lastname"],
         "email":request.form["email"],
-        "password":pw_hash
+        "password":pw_hash,
+        "is_housekeeper":is_housekeeper_value_checked
     }
-    User.register(data)
+
+    print('data:', data)
+    User.register(data) 
 
     # getting user by email from db, so that we put the user id in session
     user_in_db = User.get_user_by_email(data)
@@ -38,7 +50,7 @@ def register_user():
     #we need to put user id in session
     session['user_id']=user_in_db.id
 
-    return redirect('/dashboard')
+    return redirect('/housekeeper_profile/'+str(user_in_db.id)+'/profile/show_edit')
 
 @app.route('/logout')
 def logout():
@@ -67,7 +79,7 @@ def login():
     # saving user first name in session
     session['fname']=user_in_db.first_name
     session['user_id']=user_in_db.id
-    return redirect('/dashboard')
+    return redirect('/housekeeper_profile/'+str(user_in_db.id))
 
 @app.route('/dashboard')
 def dashboard():
@@ -163,7 +175,9 @@ def show_edit_housekeeper_profile(id):
         "user_id" : id
     }
     housekeeper_from_db = User.get_user_by_id(data)
-    return render_template('edit_profile.html', housekeeper = housekeeper_from_db)
+    housekeeper_skills_form_db = Skill.get_skills_from_db(data)
+
+    return render_template('edit_profile.html', housekeeper = housekeeper_from_db, housekeeper_skills = housekeeper_skills_form_db)
 
 @app.route('/housekeeper_profile/<int:id>/profile/edit', methods=['POST'])
 def edit_housekeeper_profile(id):
