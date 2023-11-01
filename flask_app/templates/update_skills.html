@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Housekeeper Skills</title>
+</head>
+<body>
+    <div>
+        <a href="">Dashboard</a>
+        <a href="">Logout</a>
+    </div>
+    <div>
+        <h3> Add skills for {{housekeeper_for_add_skills.first_name}}</h3>
+        <form action="/housekeeper_profile/{{housekeeper_for_add_skills.id}}/update_skill" method="post">
+            <label for="update_skill">Update Skill:</label>
+            <textarea name="skills_name" id="" cols="30" rows="10"></textarea>
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</body>
+</html>

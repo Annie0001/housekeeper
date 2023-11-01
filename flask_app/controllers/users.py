@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request,redirect,session,flash
 from flask_app import app
 from flask_app.models.user import User
-from flask_app.models.tree import Tree
+from flask_app.models.skill import Skill
 
 from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt(app)

@@ -29,7 +29,7 @@ class Skill:
         if results:
             for row in results:
                 # convert book data from row into object
-                user = cls(row)
-                housekeeper_skills_list.append(user)
+                skill = cls(row)
+                housekeeper_skills_list.append(skill)
         return housekeeper_skills_list
 
