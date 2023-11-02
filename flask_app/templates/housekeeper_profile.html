@@ -4,66 +4,65 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Housekeeper Profile</title>
 </head>
 <body>
-    <div>
+    <div class="top_nav">
         <a href="/housekeeper_profile/{{housekeeper.id}}/profile/show_edit">Update Profile</a>
-        <a href="">Add a Review</a>
-        <form action="/logout">
-            <div class="mx-auto" style="display: flex; justify-content: space-between; padding: 20px;">
-                <div style="display: flex; justify-content: space-around; align-items: center;">
-                    <button type="submit" class="btn btn-success logout_button">Logout</button>
-                </div>
-            </div>
-        </form>
+        <!-- <a href="">Add a Review</a> -->
+        <a href="/logout">Logout</a>
     </div>
-    <table>
-        <tr>
-            <td><img src="photo.jpg" alt="" width="100" height="100"></td>
-            <td>{{housekeeper.first_name}} {{housekeeper.last_name}} <br>
-                Rate: $ {{housekeeper.rate}} /h <br>
-                Zip Code: {{housekeeper.zip_code}} <br>
-                Email: {{housekeeper.email}} <br>
-                Phone Number: {{housekeeper.phone_number}} <br>
-            </td>
-            <td>
-                Skills: <br>
-                Sofa Cleaning <br>
-                Curtain Cleaning <br>
-                Floor mopping <br>
-                Bathroom Scrubing
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Specialized in
-                {%if housekeeper.home == 1%}
-                    home,
-                {%endif%}
-                {%if housekeeper.office == 1%}
-                    office,
-                {%endif%}
-                {%if housekeeper.deep_cleaning == 1%}
-                    deep cleaning
-                {%endif%}
-                {%if housekeeper.same_day_cleaning == 1%}
-                    same_day_cleaning
-                {%endif%}
-            </td>
-        </tr>
+    <div class="housekeeper_profile_container">
+        <table>
+            <tr>
+                <td><img src="{{ url_for('static', filename='photos/uploads/') }}{{housekeeper.photo}}" alt="" width="150" height="150"></td>
+                <td>{{housekeeper.first_name}} {{housekeeper.last_name}} <br>
+                    Rate: $ {{housekeeper.rate}} /h <br>
+                    Zip Code: {{housekeeper.zip_code}} <br>
+                    Email: {{housekeeper.email}} <br>
+                    Phone Number: {{housekeeper.phone_number}} <br>
+                </td>
+                <!-- <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> -->
+                <td>
+                    Skills: <br>
+                    Sofa Cleaning <br>
+                    Curtain Cleaning <br>
+                    Floor mopping <br>
+                    Bathroom Scrubing
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Specialized in
+                    {%if housekeeper.home == 1%}
+                        home,
+                    {%endif%}
+                    {%if housekeeper.office == 1%}
+                        office,
+                    {%endif%}
+                    {%if housekeeper.deep_cleaning == 1%}
+                        deep cleaning
+                    {%endif%}
+                    {%if housekeeper.same_day_cleaning == 1%}
+                        same_day_cleaning
+                    {%endif%}
+                </td>
+            </tr>
 
-        <tr>
-            <td>
-                Hello, my name is {{housekeeper.first_name}},
-            </td>
-        </tr>
-        <tr>
-            <td>
-                {{housekeeper.description}}
-            </td>
-        </tr>
-    </table>
+            <tr>
+                <td>
+                    Hello, my name is {{housekeeper.first_name}},
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{housekeeper.description}}
+                </td>
+            </tr>
+        </table>
     <!-- <h4>Clients feedback:</h4> -->
+    </div>
 </body>
 </html>

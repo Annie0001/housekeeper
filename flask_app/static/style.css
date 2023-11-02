@@ -1,3 +1,58 @@
+*{
+    padding:0;
+    margin:0;
+}
+.container{
+    width: 50%;
+    margin:0px auto;
+    padding: 30px;
+}
+.align_center{
+    width: 50%;
+    margin:0px auto;
+    margin: 50px;
+}
+.housekeeper_profile_container{
+    width: 50%;
+    margin:0px auto;
+}
+.top_nav{
+    display: flex;
+    width: auto;
+    justify-content: end;
+    margin: 20px;
+    padding:30px;
+}
+.content_center{
+    width: 70%;
+    margin: 0px auto;
+    /* padding:30px; */
+}
+.top_nav a{
+    margin-left: 30px;
+}
+img {
+    padding: 5px;
+}
+.housekeeper_profile_container td{
+    padding-left: 10px;
+}
+.housekeeper_edit_container {
+    padding-left: 10px;
+}
+.border{
+    border: 2px solid black;
+}
+.skill_font{
+    font-size: large;
+    font-weight: bold;
+}
+/* .space_around{
+    margin: 30px;
+} */
+/* .border_design{
+    border: 3px solid white;
+} */
 .show_tree{
     padding:20px;
     margin-left: 50px;

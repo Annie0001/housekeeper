@@ -32,4 +32,35 @@ class Skill:
                 skill = cls(row)
                 housekeeper_skills_list.append(skill)
         return housekeeper_skills_list
+    @classmethod
+    def get_skill_by_id(cls,data):
+
+        query = "SELECT * FROM skill WHERE id = %(skill_id)s"
+
+        results = connectToMySQL('housekeeper_schema').query_db(query,data)
+
+        if len(results) < 1:
+            return False
+        
+        #create class instance of user returned becasue the user exists with the given email
+        skill_from_db = cls(results[0])
+        return skill_from_db
+    
+    @classmethod
+    def update_skill_by_id(cls,data):
+
+        query = "UPDATE skill SET skill_name = %(update_skill)s WHERE id = %(id)s"
+        
+        results = connectToMySQL('housekeeper_schema').query_db(query,data)
+
+    @classmethod
+    def delete_skill_by_id(cls,data):
+
+        query = "DELETE FROM skill WHERE id = %(id)s"
+        
+        results = connectToMySQL('housekeeper_schema').query_db(query,data)
+
+    
+
+
 

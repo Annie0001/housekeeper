@@ -28,8 +28,31 @@ def add_skills(id):
 def show_update_skills(id,skill_id):
 
     data={
-        "user_id":id
-
+        "user_id":id,
+        "skill_id":skill_id
     }
     housekeeper_from_db = User.get_user_by_id(data)
-    return render_template('update_skills.html',housekeeper_for_add_skills = housekeeper_from_db )
+    skill_from_db_by_id = Skill.get_skill_by_id(data)
+    return render_template('update_skills.html',housekeeper_for_add_skills = housekeeper_from_db, skill = skill_from_db_by_id )
+
+@app.route('/housekeeper_profile/<int:id>/skill/<int:skill_id>/update_skill' , methods=['POST'])
+def update_skill_by_skill_id(id, skill_id):
+
+    data={
+        "update_skill":request.form["skills_name"],
+        "id":skill_id
+    }
+    Skill.update_skill_by_id(data)
+    return redirect('/housekeeper_profile/'+str(id)+'/profile/show_edit')
+
+@app.route('/housekeeper_profile/<int:id>/skill/<int:skill_id>/delete')
+def delete_skill_by_skill_id(id, skill_id):
+
+    data={
+        "id":skill_id
+    }
+    Skill.delete_skill_by_id(data)
+    return redirect('/housekeeper_profile/'+str(id)+'/profile/show_edit')
+
+
+

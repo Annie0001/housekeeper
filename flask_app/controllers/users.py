@@ -1,10 +1,54 @@
-from flask import Flask, render_template, request,redirect,session,flash
+from flask import Flask, render_template, request,redirect,session,flash, url_for
 from flask_app import app
 from flask_app.models.user import User
 from flask_app.models.skill import Skill
+from werkzeug.utils import secure_filename
+import os
+from os.path import join, dirname, realpath
+
 
 from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt(app)
+
+# To upload file/photo
+UPLOAD_FOLDER = join(dirname(realpath(__file__)), '../static/Photos/uploads')
+
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/housekeeper_profile/<int:id>/file_upload', methods=['GET','POST'])
+def upload_file(id):
+    if request.method == 'POST':
+        print('upload_file POST')
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part', 'upload')
+            return redirect(request.url)
+        file = request.files['file']
+        # If the user does not select a file, the browser submits an
+        # empty file without a filename.
+        if file.filename == '':
+            flash('No selected file', 'upload')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            # saving the file in the file system
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+            # saving the file_name in the database
+            data = {
+                "user_id": id,
+                "file_name":filename
+            }
+            User.housekeeper_file_upload(data)
+            return redirect('/housekeeper_profile/'+str(id)+'/profile/show_edit')
+    
+    print('upload_file NOT POST')
+    return redirect('/housekeeper_profile/'+str(id)+'/profile/show_edit')
 
 
 @app.route('/create')

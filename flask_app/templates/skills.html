@@ -4,18 +4,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Housekeeper Skills</title>
 </head>
 <body>
-    <div>
-        <a href="">Dashboard</a>
-        <a href="">Logout</a>
+    <div class="top_nav">
+        <a href="/housekeeper_profile/{{housekeeper_for_add_skills.id}}/profile/show_edit">Update Profile</a>
+        <a href="/logout">Logout</a>
     </div>
-    <div>
+    <div class="content_center">
         <h3> Add skills for {{housekeeper_for_add_skills.first_name}}</h3>
+        <br>
         <form action="/housekeeper_profile/{{housekeeper_for_add_skills.id}}/add_skill" method="post">
-            <label for="">Skill Name:</label>
+            <p>
+                <label for="">Skill Name:</label><br>
+            </p>
             <textarea name="skills_name" id="" cols="30" rows="10"></textarea>
+            <br>
             <button type="submit">Add</button>
         </form>
     </div>

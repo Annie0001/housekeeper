@@ -5,12 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Find your Housekeeper</title>
 </head>
 <body>
+    <div class="top_nav">
+        <a href="/">Home</a>
+    </div>
     <h2 class="text-center">Help us choose what cleaning services you like!</h2>
-    <form action="/cleaning_services_search_results" method="post">
-        <div class="form-group">
+    <form class="align_center" action="/cleaning_services_search_results" method="post">
+        <!-- <div class="form-group">
             <label for="type_of_services">Type of Services:</label>
             <select class="form-control col-md-4" value="type_of_services" name="type_of_services"id="exampleFormControlSelect1">
             <option>Home</option>
@@ -18,15 +22,15 @@
             <option>Deep Cleaning</option>
             <option>Same Day Cleaning</option>
             </select>
-        </div>
+        </div> -->
         <div class="form-group">
-            <label for="rate">Rate</label>
+            <label for="rate">Rate :</label>
             <select class="form-control col-md-4" value="rate" name="rate" id="exampleFormControlSelect1">
-            <option>100</option>
-            <option>80</option>
-            <option>60</option>
-            <option>50</option>
-            <option>30</option>
+            <option value="100"> Less than $100</option>
+            <option value="80"> Less than $80</option>
+            <option value="60"> Less than $60</option>
+            <option value="50"> Less than $50</option>
+            <option value="30"> Less than $30</option>
             </select>
         </div>
         <div>
@@ -66,16 +70,16 @@
         </div>
         <button type="submit">Find</button>
         </form>
-    <div>
-            <table>
+    <div class="align_center">
+        <table>
             {%for user in housekeepers%}
             <tr>
                 <td>
-                    <a href="/housekeeper_profile/{{user.id}}"><img src="photo.jpg" alt="" width="100" height="100"></a>
+                    <a href="/housekeeper_profile/{{user.id}}"><img src="{{ url_for('static', filename='photos/uploads/') }}{{user.photo}}" alt="" width="100" height="100"></a>
                 </td>
                 <td>
-                    {{user.first_name}} {{user.last_name}}<br>
-                    $ {{user.rate}}<br>
+                    Name: {{user.first_name}} {{user.last_name}}<br>
+                    Rate: $ {{user.rate}}<br>
                     Specialized in 
                         {%if user.home ==1%}
                             home,
@@ -89,11 +93,10 @@
                         {%if user.same_day_cleaning ==1%}
                             same day cleaning
                         {%endif%}
-                    
-                    {%endfor%}
                 </td>
             </tr>
-            </table>
+            {%endfor%}
+        </table>
     </div>
 </body>
 </html>

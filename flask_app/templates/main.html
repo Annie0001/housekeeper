@@ -4,16 +4,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Find your Housekeeper</title>
 </head>
 <body>
     <div>
-        <a href="/create">Become a Housekeeper</a>
-        <a href="/create">Already a member</a>
+        <div class="d-flex justify-content-around">
+            <a href="/create">Become a Housekeeper</a>
+            <a href="/create">Already a member</a>
+        </div>
+        <div class="container">
+            <h2> Welcome to Super Clean Housekeeping Services</h2>
+            <form class="container" action="/cleaning_services">
+                <p ><img src="{{ url_for('static', filename='photos/UI/First_Page_photo.png') }}" alt="housekeeper" width="200" height="200"></p>
+                <button type="submit">Find your Housekeeper</button>
+            </form>
+        </div>
     </div>
-    <form action="/cleaning_services">
-        <img src="" alt="housekeeper">
-        <button type="submit">Find your Housekeeper</button>
-    </form>
 </body>
 </html>

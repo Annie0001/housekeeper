@@ -21,6 +21,7 @@ class User:
         self.same_day_cleaning = data ['same_day_cleaning_service']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
+        self.photo = data['photo']
     
     @classmethod
     def register(cls, data):
@@ -190,4 +191,12 @@ class User:
         query = "Update users SET first_name=%(first_name)s, last_name=%(last_name)s, email=%(email)s, phone_number=%(phone_number)s, service_zip_code=%(zip_code)s, rate=%(rate)s, description=%(description)s, home_service=%(home_cleaning)s, office_service=%(office_cleaning)s, deep_cleaning_service=%(deep_cleaning_services)s, same_day_cleaning_service=%(same_day_cleaning_services)s, gender=%(gender)s"
 
         return connectToMySQL('housekeeper_schema').query_db(query, data)
+    
+    @classmethod
+    def housekeeper_file_upload(cls, data):
+        query = "UPDATE users SET photo= %(file_name)s where id = %(user_id)s"
+
+        return connectToMySQL('housekeeper_schema').query_db(query, data)
+    
+    
     

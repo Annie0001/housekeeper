@@ -1,0 +1,9 @@
+Fonts used in this design:
+
+Font: Lato
+Author: Łukasz Dziedzic
+Url: https://fonts.google.com/specimen/Lato
+
+Font: Outfit
+Author: On Brand Investments Pty Ltd,Rodrigo Fuenzalida
+Url: https://fonts.google.com/specimen/Outfit
