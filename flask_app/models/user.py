@@ -133,18 +133,18 @@ class User:
         is_valid = True
 
         # validation for first name field on update_user
-        if len(user["firstname"]) < 3:
+        if len(user["firstName"]) < 3:
             flash('Your Name should have at least 3 characters!!!', 'update_user')
             is_valid = False
-        if not user["firstname"].isalpha():
+        if not user["firstName"].isalpha():
             flash('Your Name should contain only letters!!!', 'update_user')
             is_valid = False
 
         # validation for last name field on update_user
-        if len(user["lastname"]) < 3:
+        if len(user["lastName"]) < 3:
             is_valid = False
             flash('Your Last Name should have at least 3 characters!!!','update_user')
-        if not user["lastname"].isalpha():
+        if not user["lastName"].isalpha():
             flash('Your  Last Name should contain only letters!!!','update_user')
             is_valid = False
 
@@ -166,12 +166,68 @@ class User:
             flash('A user with the given email is already registered. Choose another email.', 'update_user')
             is_valid = False
     
+        print("phone: ", user["phone_number"])
+
+        # phone_number
+        if not user["phone_number"].isnumeric():
+            flash('Phone Number should contain only numbers!!!', 'update_user')
+            is_valid = False
+        if "phone_number" in user and len(user["phone_number"]) != 10:
+            flash('Phone Number must contain 10 digits!!!', 'update_user')
+            is_valid = False
+
+        # zip code validation to be number
+        if not user["zip_code"].isnumeric():
+            flash('Zip Code should contain only numbers!!!', 'update_user')
+            is_valid = False
+        if len(user["zip_code"]) != 5:
+            flash('Zip Code must contain 5 digits!!!', 'update_user')
+            is_valid = False
+
+        # rate validation to be number
+        if not user["rate"].isnumeric():
+            flash('Rate should contain only numbers!!!', 'update_user')
+            is_valid = False
+        if not user["rate"].isnumeric() or len(user["rate"]) < 1 or int(user["rate"]) < 1 or len(user["rate"]) > 3:
+            flash('Rate must contain up to 3 digits and more than 1!!!', 'update_user')
+            is_valid = False
+
         return is_valid
-    
+
+    @staticmethod
+    def validate_search_user(user):
+        is_valid = True
+
+        # zip code validation to be number
+        if not user["zip_code"].isnumeric():
+            flash('Zip Code should contain only numbers!!!', 'search_cleaning_services')
+            is_valid = False
+        if len(user["zip_code"]) != 5:
+            flash('Zip Code must contain 5 digits!!!', 'search_cleaning_services')
+            is_valid = False
+        return is_valid
+
     @classmethod
     def housekeeper_search_results(cls,data):
-        # query = "SELECT * FROM users where is_housekeeper = 1"
-        query = "SELECT * FROM users where is_housekeeper = 1 and home_service=%(home)s and office_service=%(office)s and deep_cleaning_service=%(deep_cleaning)s and same_day_cleaning_service= %(same_day_cleaning)s and rate< %(rate)s and service_zip_code = %(zip_code)s"
+        #query = "SELECT * FROM users where is_housekeeper = 1 and home_service=%(home)s and office_service=%(office)s and deep_cleaning_service=%(deep_cleaning)s and same_day_cleaning_service= %(same_day_cleaning)s and rate< %(rate)s and service_zip_code = %(zip_code)s"
+
+        query = "SELECT * FROM users where is_housekeeper = 1 "
+
+        if "home" in data:
+            query += " and home_service=%(home)s"
+        
+        if "office" in data:
+            query += " and office_service=%(office)s"
+        
+        if "deep_cleaning" in data:
+            query += " and deep_cleaning_service=%(deep_cleaning)s"
+
+        if "same_day_cleaning" in data:
+            query += " and same_day_cleaning_service= %(same_day_cleaning)s"
+
+        query += " and rate< %(rate)s and service_zip_code = %(zip_code)s"
+
+
         results =  connectToMySQL('housekeeper_schema').query_db(query,data)
         # if user with this email does not exist, return false
 
@@ -187,8 +243,8 @@ class User:
 
 
     @classmethod
-    def edit_housekeeper_profile(cls, data):
-        query = "Update users SET first_name=%(first_name)s, last_name=%(last_name)s, email=%(email)s, phone_number=%(phone_number)s, service_zip_code=%(zip_code)s, rate=%(rate)s, description=%(description)s, home_service=%(home_cleaning)s, office_service=%(office_cleaning)s, deep_cleaning_service=%(deep_cleaning_services)s, same_day_cleaning_service=%(same_day_cleaning_services)s, gender=%(gender)s"
+    def update_housekeeper_profile(cls, data):
+        query = "Update users SET first_name=%(first_name)s, last_name=%(last_name)s, email=%(email)s, phone_number=%(phone_number)s, service_zip_code=%(zip_code)s, rate=%(rate)s, description=%(description)s, home_service=%(home_cleaning)s, office_service=%(office_cleaning)s, deep_cleaning_service=%(deep_cleaning_services)s, same_day_cleaning_service=%(same_day_cleaning_services)s, gender=%(gender)s where id=%(id)s"
 
         return connectToMySQL('housekeeper_schema').query_db(query, data)
     

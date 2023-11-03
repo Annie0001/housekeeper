@@ -10,7 +10,10 @@
 </head>
 <body>
     <div class="top_nav">
+        <!-- checking to see if login-ed user is same as the one visiting the profile to show update link -->
+        {%if housekeeper.id == session['user_id']%}
         <a href="/housekeeper_profile/{{housekeeper.id}}/profile/show_edit">Update Profile</a>
+        {%endif%}
         <!-- <a href="">Add a Review</a> -->
         <a href="/logout">Logout</a>
     </div>
@@ -19,31 +22,37 @@
             <tr>
                 <td><img src="{{ url_for('static', filename='photos/uploads/') }}{{housekeeper.photo}}" alt="" width="150" height="150"></td>
                 <td>{{housekeeper.first_name}} {{housekeeper.last_name}} <br>
-                    Rate: $ {{housekeeper.rate}} /h <br>
+                    Rate: ${{housekeeper.rate}} / h <br>
                     Zip Code: {{housekeeper.zip_code}} <br>
                     Email: {{housekeeper.email}} <br>
                     Phone Number: {{housekeeper.phone_number}} <br>
                 </td>
                 <!-- <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> -->
-                <td>
+                <!-- <td>
                     Skills: <br>
                     Sofa Cleaning <br>
                     Curtain Cleaning <br>
                     Floor mopping <br>
                     Bathroom Scrubing
+                </td> -->
+                <td>
+                    Skills: <br>
+                    {%for skill in housekeeper_skills%}
+                    {{skill.skill_name}} <br>
+                    {%endfor%}
                 </td>
             </tr>
             <tr>
                 <td>
                     Specialized in
                     {%if housekeeper.home == 1%}
-                        home,
+                        residential,
                     {%endif%}
                     {%if housekeeper.office == 1%}
-                        office,
+                        commercial,
                     {%endif%}
                     {%if housekeeper.deep_cleaning == 1%}
-                        deep cleaning
+                        deep cleaning,
                     {%endif%}
                     {%if housekeeper.same_day_cleaning == 1%}
                         same_day_cleaning

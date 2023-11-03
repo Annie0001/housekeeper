@@ -6,6 +6,10 @@ from flask_app.models.skill import Skill
 @app.route('/housekeeper_profile/<int:id>/skill/add')
 def show_add_skills(id):
 
+    if id != session['user_id']:
+        return redirect('/')
+
+
     data={
         "user_id":id
 
@@ -16,6 +20,9 @@ def show_add_skills(id):
     
 @app.route('/housekeeper_profile/<int:id>/add_skill',methods=['POST'])
 def add_skills(id):
+
+    if id != session['user_id']:
+        return redirect('/')
     
     data = {
         "user_id":id,
@@ -26,6 +33,9 @@ def add_skills(id):
 
 @app.route('/housekeeper_profile/<int:id>/skill/<int:skill_id>/show_update_skill')
 def show_update_skills(id,skill_id):
+
+    if id != session['user_id']:
+        return redirect('/')
 
     data={
         "user_id":id,
@@ -38,6 +48,9 @@ def show_update_skills(id,skill_id):
 @app.route('/housekeeper_profile/<int:id>/skill/<int:skill_id>/update_skill' , methods=['POST'])
 def update_skill_by_skill_id(id, skill_id):
 
+    if id != session['user_id']:
+        return redirect('/')
+    
     data={
         "update_skill":request.form["skills_name"],
         "id":skill_id
@@ -47,7 +60,10 @@ def update_skill_by_skill_id(id, skill_id):
 
 @app.route('/housekeeper_profile/<int:id>/skill/<int:skill_id>/delete')
 def delete_skill_by_skill_id(id, skill_id):
-
+    
+    if id != session['user_id']:
+        return redirect('/')
+    
     data={
         "id":skill_id
     }

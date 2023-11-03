@@ -13,19 +13,21 @@
         <a href="/">Home</a>
     </div>
     <h2 class="text-center">Help us choose what cleaning services you like!</h2>
+    <div style="color:red; background-color: rgb(247,214,216); ">
+        {% with messages = get_flashed_messages(category_filter=["search_cleaning_services"]) %}
+            {% if messages %}
+                {% for message in messages %}
+                    <p>{{message}}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
     <form class="align_center" action="/cleaning_services_search_results" method="post">
-        <!-- <div class="form-group">
-            <label for="type_of_services">Type of Services:</label>
-            <select class="form-control col-md-4" value="type_of_services" name="type_of_services"id="exampleFormControlSelect1">
-            <option>Home</option>
-            <option>Office</option>
-            <option>Deep Cleaning</option>
-            <option>Same Day Cleaning</option>
-            </select>
-        </div> -->
         <div class="form-group">
-            <label for="rate">Rate :</label>
+            <label for="rate">Rate : (Per Hour)</label>
             <select class="form-control col-md-4" value="rate" name="rate" id="exampleFormControlSelect1">
+            <option value=""></option>
+            <option value="500"> Less than $500</option>
             <option value="100"> Less than $100</option>
             <option value="80"> Less than $80</option>
             <option value="60"> Less than $60</option>
@@ -34,13 +36,14 @@
             </select>
         </div>
         <div>
+            <label for="">Service Type:</label><br>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="checkbox" id="inlineCheckbox1" name="home" value="home_is_selected">
-                <label class="form-check-label" for="home" >Home</label>
+                <label class="form-check-label" for="home" >Residential Cleaning</label>
             </div>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="office" value="office_is_selected">
-                <label class="form-check-label" for="office">Office</label>
+                <label class="form-check-label" for="office">Commercial Cleaning</label>
             </div>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="deep_cleaning" value="deep_cleaning_is_selected">
@@ -51,15 +54,6 @@
                 <label class="form-check-label" for="same_day_cleaning">Same Day Cleaning</label>
             </div>
         </div>
-        <!-- <div class="form-group">
-            <label for="rating">Rating: </label>
-            <select class="form-control col-md-4" value="rating" name="rating" id="exampleFormControlSelect1">
-            <option>5 star</option>
-            <option>4 star</option>
-            <option>3 star</option>
-            <option>2 star</option>
-            <option>1 star</option>
-            </select> -->
         </div>
         <p>
 
@@ -82,10 +76,10 @@
                     Rate: $ {{user.rate}}<br>
                     Specialized in 
                         {%if user.home ==1%}
-                            home,
+                            residential,
                         {%endif%}
                         {%if user.office ==1%}
-                            office,
+                            commercial,
                         {%endif%}
                         {%if user.deep_cleaning ==1%}
                             deep cleaning,

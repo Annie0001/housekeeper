@@ -16,7 +16,7 @@
     <div class="content_center">
         <h1> Update Your Profile</h1>
         <div style="color:red; background-color: rgb(247,214,216); ">
-            {% with messages = get_flashed_messages(category_filter=["upload"]) %}
+            {% with messages = get_flashed_messages(category_filter=["update_user"]) %}
                 {% if messages %}
                     {% for message in messages %}
                         <p>{{message}}</p>
@@ -44,7 +44,7 @@
                     <input type="text" class="form-control" id="inputPhoneNumber" name="phone_number" value="{{housekeeper.phone_number}}">
                     <label for="inputZipCode">Service Zip Code:</label>
                     <input type="text" class="form-control" id="inputZipCode" name="zip_code" value="{{housekeeper.zip_code}}">
-                    <label for="inputRate">Rate:</label>
+                    <label for="inputRate">Rate: ($ Per Hour)</label>
                     <input type="text" class="form-control" id="inputRate" name="rate" value="{{housekeeper.rate}}">
                 </div>
             </div>
@@ -122,6 +122,7 @@
                 </table>
             </div>
             <p></p>
+            <input type="hidden" name="id" value="{{housekeeper.id}}">
             <button type="submit">Update</button>
         </form>
     </div>  

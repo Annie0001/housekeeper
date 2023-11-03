@@ -26,13 +26,13 @@ def upload_file(id):
         print('upload_file POST')
         # check if the post request has the file part
         if 'file' not in request.files:
-            flash('No file part', 'upload')
+            flash('No file part', 'update_user')
             return redirect(request.url)
         file = request.files['file']
         # If the user does not select a file, the browser submits an
         # empty file without a filename.
         if file.filename == '':
-            flash('No selected file', 'upload')
+            flash('No selected file', 'update_user')
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
@@ -51,17 +51,17 @@ def upload_file(id):
     return redirect('/housekeeper_profile/'+str(id)+'/profile/show_edit')
 
 
-@app.route('/create')
+@app.route('/register_and_login')
 def show_registeration_and_login():
 
-    return render_template('create.html')
+    return render_template('register_and_login.html')
 
 @app.route('/register_user', methods=['POST'])
 def register_user():
 
     # checking the submitted registeration form fields are valid or not 
     if not User.validate_user(request.form):
-        return redirect('/create')
+        return redirect('/register_and_login')
     
     pw_hash = bcrypt.generate_password_hash(request.form['password'])
     print(pw_hash)
@@ -125,27 +125,6 @@ def login():
     session['user_id']=user_in_db.id
     return redirect('/housekeeper_profile/'+str(user_in_db.id))
 
-@app.route('/dashboard')
-def dashboard():
-    #checking if user is not in session then redirect to /
-    if not session.get('user_id'):
-        return redirect('/')
-    
-    trees_from_database = Tree.get_trees_from_db()
-    return render_template('dashboard.html', trees = trees_from_database) 
-
-@app.route('/user/account')
-def show_account():
-    #checking if user is not in session then redirect to /
-    if not session.get('user_id'):
-        return redirect('/')
-    
-    data = {
-        "user_id" : session['user_id']
-    }
-    my_trees_from_db = Tree.get_trees_by_user_id(data)
-    return render_template('show_account.html',trees = my_trees_from_db)
-
 @app.route('/user/<int:id>', methods=['POST'])
 def update_user(id):
 
@@ -175,32 +154,56 @@ def show_cleaning_services():
 @app.route('/cleaning_services_search_results', methods=['POST'])
 def search_cleaning_services_results():
 
-    home_value_check = 0
-    if "home" in request.form and request.form["home"] == "home_is_selected":
-        home_value_check = 1
-    
-    office_value_check = 0
-    if "office" in request.form and request.form["office"] == "office_is_selected":
-        office_value_check = 1
-    
-    deep_cleaning_value_check = 0
-    if "deep_cleaning" in request.form and request.form["deep_cleaning"] == "deep_cleaning_is_selected":
-        deep_cleaning_value_check = 1
+    # checking the submitted registeration form fields are valid or not 
+    if not User.validate_search_user(request.form):
+        return redirect('/cleaning_services')
 
-    same_day_cleaning_value_check = 0
-    if "same_day_cleaning" in request.form and request.form["same_day_cleaning"] == "same_day_cleaning_is_selected":
-        same_day_cleaning_value_check = 1
+    # --------------------- THIS IS A SIMPLE SERACH> THIS IS COMMENTED TO DO ENHANCED SEARCH ----------------
+    # home_value_check = 0
+    # if "home" in request.form and request.form["home"] == "home_is_selected":
+    #     home_value_check = 1
+    
+    # office_value_check = 0
+    # if "office" in request.form and request.form["office"] == "office_is_selected":
+    #     office_value_check = 1
+    
+    # deep_cleaning_value_check = 0
+    # if "deep_cleaning" in request.form and request.form["deep_cleaning"] == "deep_cleaning_is_selected":
+    #     deep_cleaning_value_check = 1
 
+    # same_day_cleaning_value_check = 0
+    # if "same_day_cleaning" in request.form and request.form["same_day_cleaning"] == "same_day_cleaning_is_selected":
+    #     same_day_cleaning_value_check = 1
+
+    # data = {
+    #     "id" : id,
+    #     "home":home_value_check,
+    #     "office":office_value_check,
+    #     "deep_cleaning":deep_cleaning_value_check,
+    #     "same_day_cleaning": same_day_cleaning_value_check,
+    #     "rate":request.form["rate"],
+    #     "zip_code":request.form["zip_code"]
+    # }
+
+    #--------- ENHANCED SEARCH ------------------
     data = {
         "id" : id,
-        "home":home_value_check,
-        "office":office_value_check,
-        "deep_cleaning":deep_cleaning_value_check,
-        "same_day_cleaning": same_day_cleaning_value_check,
         "rate":request.form["rate"],
         "zip_code":request.form["zip_code"]
     }
+
+    if "home" in request.form and request.form["home"] == "home_is_selected":
+        data["home"] = 1
     
+    if "office" in request.form and request.form["office"] == "office_is_selected":
+        data["office"] = 1
+    
+    if "deep_cleaning" in request.form and request.form["deep_cleaning"] == "deep_cleaning_is_selected":
+        data["deep_cleaning"] = 1
+
+    if "same_day_cleaning" in request.form and request.form["same_day_cleaning"] == "same_day_cleaning_is_selected":
+        data["same_day_cleaning"] = 1
+
     housekeepers_search_result = User.housekeeper_search_results(data)
     return render_template('search_cleaning_services.html', housekeepers =housekeepers_search_result)
 
@@ -210,10 +213,18 @@ def housekeeper_profile(id):
         "user_id" : id
     }
     housekeeper_from_db = User.get_user_by_id(data)
-    return render_template('housekeeper_profile.html', housekeeper = housekeeper_from_db)
+    housekeeper_skills_form_db = Skill.get_skills_from_db(data)
+    return render_template('housekeeper_profile.html', housekeeper = housekeeper_from_db, housekeeper_skills = housekeeper_skills_form_db)
+
 
 @app.route('/housekeeper_profile/<int:id>/profile/show_edit')
 def show_edit_housekeeper_profile(id):
+
+    if not session.get('user_id'):
+        return redirect('/')
+    
+    if id != session['user_id']:
+        return redirect('/')
 
     data = {
         "user_id" : id
@@ -225,6 +236,10 @@ def show_edit_housekeeper_profile(id):
 
 @app.route('/housekeeper_profile/<int:id>/profile/edit', methods=['POST'])
 def edit_housekeeper_profile(id):
+
+    if not User.validate_user_on_edit(request.form):
+        print('entered here validate on edit')
+        return redirect('/housekeeper_profile/' + str(id) + '/profile/show_edit')
 
     home_value_check = 0
     if "homeCleaning" in request.form and request.form["homeCleaning"] == "home":
@@ -258,5 +273,5 @@ def edit_housekeeper_profile(id):
         "gender":request.form["genderOptions"]
     }
 
-    User.edit_housekeeper_profile(data)
+    User.update_housekeeper_profile(data)
     return redirect('/housekeeper_profile/' + str(id))
