@@ -15,7 +15,9 @@
         <a href="/housekeeper_profile/{{housekeeper.id}}/profile/show_edit">Update Profile</a>
         {%endif%}
         <!-- <a href="">Add a Review</a> -->
+        {%if 'user_id' in session%}
         <a href="/logout">Logout</a>
+        {%endif%}
     </div>
     <div class="housekeeper_profile_container">
         <table>
@@ -27,15 +29,7 @@
                     Email: {{housekeeper.email}} <br>
                     Phone Number: {{housekeeper.phone_number}} <br>
                 </td>
-                <!-- <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> -->
-                <!-- <td>
-                    Skills: <br>
-                    Sofa Cleaning <br>
-                    Curtain Cleaning <br>
-                    Floor mopping <br>
-                    Bathroom Scrubing
-                </td> -->
-                <td>
+                <td style="white-space: nowrap;">
                     Skills: <br>
                     {%for skill in housekeeper_skills%}
                     {{skill.skill_name}} <br>

@@ -21,6 +21,7 @@ class User:
         self.same_day_cleaning = data ['same_day_cleaning_service']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
+        self.gender = data['gender']
         self.photo = data['photo']
     
     @classmethod
