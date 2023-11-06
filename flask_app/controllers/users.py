@@ -230,6 +230,7 @@ def show_edit_housekeeper_profile(id):
         "user_id" : id
     }
     housekeeper_from_db = User.get_user_by_id(data)
+    print('gender: ', housekeeper_from_db.gender)
     housekeeper_skills_form_db = Skill.get_skills_from_db(data)
 
     return render_template('edit_profile.html', housekeeper = housekeeper_from_db, housekeeper_skills = housekeeper_skills_form_db)
