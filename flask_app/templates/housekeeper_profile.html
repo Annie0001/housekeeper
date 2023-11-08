@@ -10,6 +10,7 @@
 </head>
 <body>
     <div class="top_nav">
+        <a href="/">Home</a>
         <!-- checking to see if login-ed user is same as the one visiting the profile to show update link -->
         {%if housekeeper.id == session['user_id']%}
         <a href="/housekeeper_profile/{{housekeeper.id}}/profile/show_edit">Update Profile</a>

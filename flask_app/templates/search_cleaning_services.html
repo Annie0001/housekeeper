@@ -11,6 +11,9 @@
 <body>
     <div class="top_nav">
         <a href="/">Home</a>
+        {%if 'user_id' in session%}
+        <a href="/logout">Logout</a>
+        {%endif%}
     </div>
     <h2 class="text-center">Help us choose what cleaning services you like!</h2>
     <div style="color:red; background-color: rgb(247,214,216); ">
